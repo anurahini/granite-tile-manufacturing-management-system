@@ -1,0 +1,119 @@
+.auth-shell{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:var(--cream);
+}
+@media (max-width:900px){.auth-shell{grid-template-columns:1fr}}
+
+/* ---------- Left: granite-texture brand panel (pure CSS, no images/SVG) ---------- */
+.auth-brand-panel{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(156,122,70,0.16), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(156,122,70,0.10), transparent 50%),
+    linear-gradient(160deg, #241f1b 0%, #171310 100%);
+  display:flex;flex-direction:column;justify-content:center;padding:60px 56px;
+  color:var(--cream);
+}
+@media (max-width:900px){.auth-brand-panel{display:none}}
+
+/* Speckled granite texture using layered gradients — no SVG, no external assets */
+.auth-brand-texture{
+  position:absolute;inset:0;opacity:0.5;pointer-events:none;
+  background-image:
+    radial-gradient(rgba(247,239,226,0.10) 1px, transparent 1.4px),
+    radial-gradient(rgba(156,122,70,0.14) 1.2px, transparent 1.6px),
+    radial-gradient(rgba(0,0,0,0.35) 1.6px, transparent 2px);
+  background-size:34px 34px, 58px 58px, 46px 46px;
+  background-position:0 0, 12px 20px, 30px 6px;
+  mask-image:linear-gradient(160deg, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
+}
+.auth-brand-panel::after{
+  content:"";position:absolute;width:340px;height:340px;right:-90px;bottom:-90px;
+  background:linear-gradient(135deg, var(--orange) 0%, transparent 70%);
+  opacity:0.18;clip-path:polygon(0 100%, 100% 100%, 100% 0);
+}
+
+.auth-brand-content{position:relative;z-index:1;max-width:420px}
+.auth-brand-logo{
+  display:flex;align-items:center;gap:10px;font-family:var(--font-display);
+  font-weight:600;font-size:16px;color:var(--white);margin-bottom:56px;
+}
+.auth-brand-copy h1{color:var(--white);font-size:32px;margin:12px 0 14px;line-height:1.2}
+.auth-brand-copy p{color:rgba(247,239,226,0.7);font-size:14.5px;line-height:1.65}
+
+.auth-brand-features{display:flex;flex-direction:column;gap:16px;margin-top:44px}
+.auth-feature{display:flex;align-items:center;gap:12px;font-size:13.8px;color:rgba(247,239,226,0.85)}
+.auth-feature svg{
+  flex-shrink:0;color:var(--orange-soft);background:rgba(255,255,255,0.06);
+  padding:8px;border-radius:10px;width:34px;height:34px;box-sizing:border-box;
+}
+
+/* ---------- Right: form panel ---------- */
+.auth-form-panel{
+  display:flex;align-items:center;justify-content:center;padding:40px 24px;background:var(--cream);
+}
+.auth-form-card{width:100%;max-width:440px}
+.auth-form-header{margin-bottom:26px}
+.auth-form-header h2{font-size:27px;margin-top:8px}
+.auth-form-header p{color:var(--stone);font-size:14px;margin-top:6px}
+
+.auth-form{display:flex;flex-direction:column;gap:16px}
+.auth-form .field{gap:7px}
+.auth-form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:480px){.auth-form-row{grid-template-columns:1fr}}
+
+.auth-row-between{display:flex;align-items:center;justify-content:space-between;font-size:13.3px}
+.auth-remember{display:flex;align-items:center;gap:8px;color:var(--stone-dark);font-weight:500}
+.auth-remember input{width:16px;height:16px;accent-color:var(--orange)}
+.auth-forgot-link{color:var(--orange-deep);font-weight:600}
+.auth-forgot-link:hover{text-decoration:underline}
+
+.auth-error{
+  background:var(--danger-bg);color:var(--danger);border-radius:var(--radius-sm);
+  padding:10px 14px;font-size:13.3px;font-weight:600;
+}
+.auth-success{
+  background:var(--success-bg);color:var(--success);border-radius:var(--radius-sm);
+  padding:10px 14px;font-size:13.3px;font-weight:600;
+}
+.auth-hint{
+  background:var(--cream-deep);color:var(--stone-dark);border-radius:var(--radius-sm);
+  padding:10px 14px;font-size:12.8px;line-height:1.6;
+}
+
+.auth-otp-row{display:flex;gap:10px}
+.auth-otp-row input{flex:1}
+.auth-otp-row button{flex-shrink:0;white-space:nowrap}
+.auth-otp-panel{
+  background:var(--cream-deep);border:1px dashed var(--orange-soft);border-radius:var(--radius-md);
+  padding:14px;margin-top:-4px;
+}
+.auth-otp-panel-label{display:flex;align-items:center;gap:7px;font-size:12.8px;font-weight:700;color:var(--orange-deep);margin-bottom:10px}
+
+.auth-submit{width:100%;justify-content:center;padding:12px;font-size:14.5px;margin-top:4px}
+
+.auth-divider{display:flex;align-items:center;gap:12px;color:var(--stone);font-size:12.5px;margin:2px 0}
+.auth-divider::before,.auth-divider::after{content:"";flex:1;height:1px;background:var(--cream-line)}
+
+.auth-google-btn{display:flex;align-items:center;gap:10px}
+.google-g-badge{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;font-family:var(--font-display);font-weight:700;font-size:12.5px;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+  background:conic-gradient(from 180deg, #4285F4 0deg 90deg, #34A853 90deg 180deg, #FBBC05 180deg 270deg, #EA4335 270deg 360deg);
+}
+
+.auth-form-footer{margin-top:22px;text-align:center;font-size:13.5px;color:var(--stone)}
+.auth-form-footer a{color:var(--orange-deep);font-weight:700}
+.auth-form-footer a:hover{text-decoration:underline}
+
+.auth-demo-note{
+  margin-top:18px;font-size:12.3px;color:var(--stone);text-align:center;font-family:var(--font-mono);
+}
+
+.login-method-tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--cream-deep);border-radius:12px;padding:5px}
+.login-method-tab{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:9px 10px;border-radius:9px;font-size:12.8px;font-weight:700;color:var(--stone-dark);
+  transition:all .15s ease;
+}
+.login-method-tab:hover{color:var(--orange-deep)}
+.login-method-tab.active{background:var(--white);color:var(--orange-deep);box-shadow:var(--shadow-sm)}

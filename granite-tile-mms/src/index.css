@@ -1,0 +1,352 @@
+/* ============================================================
+   Granite & Tile MMS — Design Tokens ("Showroom" system)
+   Palette: basalt ink, aged brass, warm alabaster, quarry green
+   Type: Fraunces (display) + Inter (body/UI) + IBM Plex Mono (data)
+
+   This is the SAME token set the whole app already consumed
+   (sidebar, navbar, cards, tables, forms, badges, every master /
+   transaction / report page) — only the values changed, so every
+   existing page re-themes to the new premium showroom look with
+   zero changes to component structure, logic, routes or data.
+   ============================================================ */
+:root{
+  --charcoal:#14120f;
+  --charcoal-soft:#211d17;
+  --charcoal-panel:#1a1712;
+  --orange:#9c7a46;
+  --orange-deep:#6e5530;
+  --orange-soft:#c9a968;
+  --cream:#f6f2e9;
+  --cream-deep:#ece2c9;
+  --cream-line:#ddd0ac;
+  --white:#ffffff;
+  --stone:#8a8071;
+  --stone-dark:#5c5548;
+  --ink:#2a2620;
+  --success:#3f8556;
+  --success-bg:#e6f1e6;
+  --warning:#c8891e;
+  --warning-bg:#faf0dc;
+  --danger:#c2452d;
+  --danger-bg:#f9e6e0;
+  --info:#3e7a73;
+  --info-bg:#e3efec;
+
+  --font-display:'Fraunces', serif;
+  --font-body:'Inter', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+
+  --radius-sm:2px;
+  --radius-md:2px;
+  --radius-lg:3px;
+  --shadow-sm:0 1px 2px rgba(20,18,15,0.07);
+  --shadow-md:0 6px 20px rgba(20,18,15,0.10);
+  --shadow-lg:0 18px 44px rgba(20,18,15,0.18);
+  --shadow-glow:0 8px 24px rgba(156,122,70,0.30);
+
+  --sidebar-w:264px;
+  --sidebar-w-collapsed:80px;
+  --navbar-h:72px;
+}
+
+/* ============================================================
+   Dark Mode — overrides the same variable set so every existing
+   component (cards, tables, sidebar, forms) re-themes automatically
+   without any structural changes.
+   ============================================================ */
+[data-theme='dark']{
+  --charcoal:#f3ece0;
+  --charcoal-soft:#e8ddc9;
+  --charcoal-panel:#2c2723;
+  --orange:#c9a968;
+  --orange-deep:#e0c084;
+  --orange-soft:#8a6e2e;
+  --cream:#15120f;
+  --cream-deep:#211c17;
+  --cream-line:#3a332a;
+  --white:#1c1814;
+  --stone:#a89a86;
+  --stone-dark:#d8cbb4;
+  --ink:#efe6d5;
+  --success:#5fb37c;
+  --success-bg:#1c2a1f;
+  --warning:#e0a83f;
+  --warning-bg:#2b2415;
+  --danger:#e2634a;
+  --danger-bg:#2c1b17;
+  --info:#59a89e;
+  --info-bg:#182523;
+}
+[data-theme='dark'] body{background:var(--cream)}
+[data-theme='dark'] .sidebar{background:#0f0d0b}
+[data-theme='dark'] .navbar,
+[data-theme='dark'] .public-nav{background:rgba(28,24,20,0.92)}
+[data-theme='dark'] .hero::before{opacity:0.5}
+[data-theme='dark'] .process-section,
+[data-theme='dark'] .site-footer,
+[data-theme='dark'] .chatbot-header,
+[data-theme='dark'] .btn-dark,
+[data-theme='dark'] .cta-inner .btn-primary{background:#0f0d0b}
+
+/* ============================================================
+   Luxury Theme — deep black-brown base with a champagne-gold
+   accent in place of orange, for a premium boutique feel.
+   ============================================================ */
+[data-theme='luxury']{
+  --charcoal:#f2e9d8;
+  --charcoal-soft:#e6d9bc;
+  --charcoal-panel:#241f18;
+  --orange:#c9a24a;
+  --orange-deep:#e0ba63;
+  --orange-soft:#8a6e2e;
+  --cream:#100e0a;
+  --cream-deep:#1c1811;
+  --cream-line:#3a3122;
+  --white:#191510;
+  --stone:#a99b7c;
+  --stone-dark:#d9caa4;
+  --ink:#f0e7d2;
+  --success:#7fb88a;
+  --success-bg:#1c2418;
+  --warning:#d9b25a;
+  --warning-bg:#2b2415;
+  --danger:#d9805a;
+  --danger-bg:#2c1c15;
+  --info:#7ab0a8;
+  --info-bg:#182320;
+}
+[data-theme='luxury'] body{background:var(--cream)}
+[data-theme='luxury'] .sidebar{background:#0c0a07}
+[data-theme='luxury'] .navbar,
+[data-theme='luxury'] .public-nav{background:rgba(18,16,12,0.92)}
+[data-theme='luxury'] .process-section,
+[data-theme='luxury'] .site-footer,
+[data-theme='luxury'] .chatbot-header,
+[data-theme='luxury'] .btn-dark,
+[data-theme='luxury'] .cta-inner .btn-primary{background:#0c0a07}
+
+/* ============================================================
+   Granite Black Theme — near-monochrome charcoal/graphite base,
+   orange kept as the sole accent, evoking a polished black slab.
+   ============================================================ */
+[data-theme='granite-black']{
+  --charcoal:#ece9e6;
+  --charcoal-soft:#dcd8d2;
+  --charcoal-panel:#232323;
+  --orange:#a68a54;
+  --orange-deep:#c9a968;
+  --orange-soft:#6e5530;
+  --cream:#0d0d0d;
+  --cream-deep:#181818;
+  --cream-line:#333333;
+  --white:#161616;
+  --stone:#9a9a9a;
+  --stone-dark:#cfcfcf;
+  --ink:#e9e9e9;
+  --success:#5fb37c;
+  --success-bg:#1a2420;
+  --warning:#e0a83f;
+  --warning-bg:#2a2115;
+  --danger:#e2634a;
+  --danger-bg:#2a1815;
+  --info:#59a89e;
+  --info-bg:#16211f;
+}
+[data-theme='granite-black'] body{background:var(--cream)}
+[data-theme='granite-black'] .sidebar{background:#0a0a0a}
+[data-theme='granite-black'] .navbar,
+[data-theme='granite-black'] .public-nav{background:rgba(13,13,13,0.92)}
+[data-theme='granite-black'] .process-section,
+[data-theme='granite-black'] .site-footer,
+[data-theme='granite-black'] .chatbot-header,
+[data-theme='granite-black'] .btn-dark,
+[data-theme='granite-black'] .cta-inner .btn-primary{background:#0a0a0a}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--cream);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,h5{font-family:var(--font-display);color:var(--charcoal);line-height:1.15;font-weight:600}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:inherit;font-size:14px}
+img{max-width:100%;display:block}
+
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--cream-line);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--stone)}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
+
+/* ---------- Signature: cut-stone corner facet ---------- */
+.facet-corner{position:relative}
+.facet-corner::before{
+  content:"";
+  position:absolute;top:0;left:0;
+  width:22px;height:22px;
+  background:linear-gradient(135deg, var(--orange) 50%, transparent 50%);
+  border-top-left-radius:var(--radius-md);
+  opacity:0.9;
+}
+
+/* ---------- Layout shell ---------- */
+.app-shell{display:flex;min-height:100vh;background:var(--cream)}
+.main-col{flex:1;display:flex;flex-direction:column;min-width:0;margin-left:var(--sidebar-w);transition:margin-left .25s ease}
+.main-col.sidebar-collapsed{margin-left:var(--sidebar-w-collapsed)}
+.page-body{padding:28px 32px 64px;flex:1}
+@media (max-width:1024px){
+  .main-col{margin-left:0}
+  .main-col.sidebar-collapsed{margin-left:0}
+  .page-body{padding:20px 16px 48px}
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:var(--radius-sm);
+  font-weight:600;font-size:14px;transition:all .18s ease;
+  white-space:nowrap;
+}
+.btn-primary{background:var(--orange);color:var(--white)}
+.btn-primary:hover{background:var(--orange-deep);transform:translateY(-1px);box-shadow:var(--shadow-glow)}
+.btn-dark{background:var(--charcoal);color:var(--white)}
+.btn-dark:hover{background:var(--charcoal-soft);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1.5px solid var(--cream-line);color:var(--charcoal)}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange-deep)}
+.btn-ghost{background:var(--cream-deep);color:var(--stone-dark)}
+.btn-ghost:hover{background:var(--cream-line)}
+.btn-sm{padding:7px 14px;font-size:13px}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--white);
+  border:1px solid var(--cream-line);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+}
+.section-title{
+  font-family:var(--font-display);
+  font-size:28px;
+  color:var(--charcoal);
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  font-size:12px;
+  color:var(--orange-deep);
+  font-weight:600;
+}
+
+/* ---------- Breadcrumb ---------- */
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--stone);margin-bottom:6px;flex-wrap:wrap}
+.breadcrumb a{color:var(--stone-dark);font-weight:500}
+.breadcrumb a:hover{color:var(--orange-deep)}
+.breadcrumb .sep{color:var(--cream-line)}
+.breadcrumb .current{color:var(--orange-deep);font-weight:600}
+
+/* ---------- Page Header ---------- */
+.page-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  gap:16px;margin-bottom:24px;flex-wrap:wrap;
+}
+.page-header h1{font-size:30px;margin-top:2px}
+.page-header p{color:var(--stone);font-size:14.5px;margin-top:6px;max-width:560px}
+
+/* ---------- Stat cards ---------- */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px}
+.stat-card{
+  background:var(--white);border:1px solid var(--cream-line);border-radius:var(--radius-lg);
+  padding:20px 22px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.stat-card .stat-icon{
+  width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.stat-card .stat-label{font-size:12.5px;color:var(--stone);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.stat-card .stat-value{font-family:var(--font-display);font-size:26px;color:var(--charcoal);margin-top:4px}
+.stat-card .stat-delta{font-size:12.5px;font-weight:600;margin-top:6px;display:flex;align-items:center;gap:4px}
+.stat-delta.up{color:var(--success)}
+.stat-delta.down{color:var(--danger)}
+
+/* ---------- Filter bar ---------- */
+.filter-bar{
+  display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  background:var(--white);border:1px solid var(--cream-line);
+  border-radius:var(--radius-md);padding:14px 16px;margin-bottom:20px;
+}
+.search-box{
+  display:flex;align-items:center;gap:8px;background:var(--cream);
+  border:1px solid var(--cream-line);border-radius:var(--radius-sm);
+  padding:9px 14px;flex:1;min-width:200px;
+}
+.search-box input{background:transparent;border:none;outline:none;width:100%;color:var(--ink)}
+.search-box svg{color:var(--stone);flex-shrink:0}
+.filter-select{
+  border:1px solid var(--cream-line);background:var(--cream);border-radius:var(--radius-sm);
+  padding:9px 12px;color:var(--stone-dark);font-weight:500;font-size:13.5px;
+}
+
+/* ---------- Table ---------- */
+.table-wrap{
+  background:var(--white);border:1px solid var(--cream-line);border-radius:var(--radius-lg);
+  overflow-x:auto;box-shadow:var(--shadow-sm);
+}
+table.data-table{width:100%;border-collapse:collapse;min-width:640px}
+.data-table thead th{
+  text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--stone);font-weight:700;background:var(--cream);
+  padding:13px 18px;border-bottom:1px solid var(--cream-line);white-space:nowrap;
+}
+.data-table tbody td{
+  padding:14px 18px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--cream-line);
+}
+.data-table tbody tr:last-child td{border-bottom:none}
+.data-table tbody tr{transition:background .15s ease}
+.data-table tbody tr:hover{background:var(--cream)}
+.mono{font-family:var(--font-mono);font-size:12.8px;color:var(--stone-dark)}
+
+/* ---------- Status badges ---------- */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;
+  font-size:12px;font-weight:700;text-transform:capitalize;
+}
+.badge-success{background:var(--success-bg);color:var(--success)}
+.badge-warning{background:var(--warning-bg);color:var(--warning)}
+.badge-danger{background:var(--danger-bg);color:var(--danger)}
+.badge-info{background:var(--info-bg);color:var(--info)}
+.badge-neutral{background:var(--cream-deep);color:var(--stone-dark)}
+
+/* ---------- Forms ---------- */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12.5px;font-weight:600;color:var(--stone-dark);text-transform:uppercase;letter-spacing:.03em}
+.field input,.field select,.field textarea{
+  border:1.5px solid var(--cream-line);border-radius:var(--radius-sm);
+  padding:10px 12px;background:var(--cream);color:var(--ink);outline:none;transition:border-color .15s ease;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--orange)}
+.form-actions{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+
+/* ---------- Tabs ---------- */
+.tab-row{display:flex;gap:6px;border-bottom:1px solid var(--cream-line);margin-bottom:22px;flex-wrap:wrap}
+.tab-item{padding:11px 18px;font-weight:600;font-size:14px;color:var(--stone);border-bottom:2.5px solid transparent;transition:all .15s ease}
+.tab-item.active{color:var(--orange-deep);border-color:var(--orange)}
+.tab-item:hover{color:var(--orange-deep)}
+
+/* ---------- Misc ---------- */
+.grid-2{display:grid;grid-template-columns:1.4fr 1fr;gap:22px}
+@media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+.pill{background:var(--cream-deep);color:var(--stone-dark);font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px}
+.divider{height:1px;background:var(--cream-line);margin:22px 0}
+.empty-note{color:var(--stone);font-size:13.5px;padding:18px;text-align:center}

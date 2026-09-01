@@ -1,0 +1,27 @@
+.clearance-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.clearance-card{
+  background:var(--white);border:1px solid var(--cream-line);border-radius:16px;overflow:hidden;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.clearance-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
+.clearance-image{position:relative;height:150px}
+.clearance-badge{
+  position:absolute;top:12px;right:12px;background:var(--danger);color:var(--white);
+  font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;box-shadow:var(--shadow-sm);
+}
+.clearance-body{padding:18px}
+.clearance-body h3{font-size:15px;margin-bottom:8px;line-height:1.35}
+.clearance-note{display:flex;gap:6px;font-size:12.3px;color:var(--stone);line-height:1.5;margin-bottom:14px}
+.clearance-note svg{color:var(--warning);flex-shrink:0;margin-top:2px}
+
+.clearance-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.clearance-original{display:flex;align-items:center;font-family:var(--font-mono);font-size:14px;color:var(--stone);text-decoration:line-through}
+.clearance-discounted{display:flex;align-items:baseline;font-family:var(--font-mono);font-weight:800;font-size:20px;color:var(--danger)}
+.clearance-discounted small{font-size:11.5px;font-weight:500;color:var(--stone);margin-left:3px}
+
+.clearance-meta-row{display:flex;gap:16px;font-size:12px;font-weight:600;color:var(--stone-dark)}
+.clearance-meta-row span{display:flex;align-items:center;gap:5px}
+
+.clearance-damage-type{
+  margin-left:8px;background:var(--danger-bg);color:var(--danger);font-weight:700;
+}
