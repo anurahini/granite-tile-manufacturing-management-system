@@ -4,6 +4,7 @@
   "description": "Full-Stack Granite & Tile Manufacturing Management System",
   "private": true,
   "scripts": {
+    "start": "node backend/server.js",
     "start:backend": "cd backend && npm start",
     "dev:backend": "cd backend && npm run dev",
     "seed:backend": "cd backend && npm run seed",

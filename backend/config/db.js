@@ -15,11 +15,12 @@ const port = process.env.DB_PORT || 3306;
 const username = process.env.DB_USER || 'root';
 const password = process.env.DB_PASSWORD || 'root';
 const database = process.env.DB_NAME || 'granite_tile_mms';
+const ssl = process.env.DB_SSL === 'true';
 
 let sequelize;
 
 if (dialect === 'mysql') {
-  sequelize = new Sequelize(database, username, password, {
+  const options = {
     host,
     port: Number(port),
     dialect: 'mysql',
@@ -30,7 +31,18 @@ if (dialect === 'mysql') {
       acquire: 30000,
       idle: 10000
     }
-  });
+  };
+
+  if (ssl) {
+    options.dialectOptions = {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    };
+  }
+
+  sequelize = new Sequelize(database, username, password, options);
 } else {
   // Embedded SQLite fallback
   const dbPath = path.join(__dirname, '..', 'granite_mms.sqlite');
