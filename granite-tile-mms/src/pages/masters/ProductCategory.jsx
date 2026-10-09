@@ -37,6 +37,7 @@ export default function ProductCategory() {
       rows={rows}
       filters={['Parent Group', 'Status']}
       addLabel="Add Category"
+      endpoint="/categories"
     />
   )
 }

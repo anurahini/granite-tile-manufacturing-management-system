@@ -37,6 +37,7 @@ export default function EmployeeMaster() {
       rows={rows}
       filters={['Designation', 'Shift', 'Status']}
       addLabel="Add Employee"
+      endpoint="/employees"
     />
   )
 }

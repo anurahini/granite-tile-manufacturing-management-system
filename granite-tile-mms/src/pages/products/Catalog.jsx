@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import PageHeader from '../../components/PageHeader.jsx'
-import { categories, colorFilters, sizeFilters, materialFilters, priceRangeFilters, ratingFilters, filterProducts, photoLayerBackground } from '../../data/products.js'
+import { categories, colorFilters, sizeFilters, materialFilters, priceRangeFilters, ratingFilters, sortOptions, filterProducts, photoLayerBackground } from '../../data/products.js'
 import { useWishlist } from '../../context/WishlistContext.jsx'
 import { useCompare } from '../../context/CompareContext.jsx'
-import { Ruler, Palette, IndianRupee, ArrowRight, Heart, Scale, Package, X, Layers, Star } from 'lucide-react'
+import { Ruler, Palette, IndianRupee, ArrowRight, Heart, Scale, Package, X, Layers, Star, Sparkles, ArrowUpDown } from 'lucide-react'
 import './Catalog.css'
 
 export default function Catalog() {
@@ -17,6 +17,7 @@ export default function Catalog() {
   const [activeMaterial, setActiveMaterial] = useState('')
   const [activePrice, setActivePrice] = useState('')
   const [activeRating, setActiveRating] = useState('')
+  const [activeSort, setActiveSort] = useState('price-asc')
 
   const navigate = useNavigate()
   const { isWishlisted, toggleWishlist } = useWishlist()
@@ -30,8 +31,9 @@ export default function Catalog() {
       material: activeMaterial || undefined,
       priceRange: activePrice || undefined,
       minRating: activeRating ? Number(activeRating) : undefined,
+      sortBy: activeSort,
     }),
-    [activeCategory, activeColor, activeSize, activeMaterial, activePrice, activeRating]
+    [activeCategory, activeColor, activeSize, activeMaterial, activePrice, activeRating, activeSort]
   )
 
   const selectCategory = (key) => {
@@ -43,10 +45,16 @@ export default function Catalog() {
     <>
       <PageHeader
         trail={[{ label: 'Home', path: '/dashboard' }, { label: 'Product Catalog' }]}
-        title="Product Catalog"
-        description="Browse our full range of granite slabs and tiles across every category, colour, size and finish."
+        title="Product Catalog & Tile Collection"
+        description="Explore our full collection of Granite Slabs, Italian Marbles, Designed Encaustic Tiles, Wooden Finish Planks, and Vitrified Tiles."
+        actions={[
+          <button className="btn btn-primary btn-sm" key="visualize" onClick={() => navigate('/room-visualizer')}>
+            <Sparkles size={15} /> AI Room Visualizer
+          </button>
+        ]}
       />
 
+      {/* Category Tabs */}
       <div className="tab-row">
         {categories.map((c) => (
           <button
@@ -59,7 +67,25 @@ export default function Catalog() {
         ))}
       </div>
 
+      {/* Filter Bar & Sorting Control */}
       <div className="catalog-filter-bar">
+        {/* SORTING SELECTOR */}
+        <div className="catalog-filter-group" style={{ background: 'var(--orange-subtle)', borderRadius: 8, padding: '6px 12px', border: '1px solid var(--orange)' }}>
+          <span className="catalog-filter-label" style={{ color: 'var(--orange-deep)', fontWeight: 800 }}>
+            <ArrowUpDown size={14} /> Sort By
+          </span>
+          <select
+            className="tune-select"
+            value={activeSort}
+            onChange={(e) => setActiveSort(e.target.value)}
+            style={{ fontSize: 13, padding: '4px 8px', fontWeight: 700, borderColor: 'var(--orange)' }}
+          >
+            {sortOptions.map((s) => (
+              <option key={s.key} value={s.key}>{s.label}</option>
+            ))}
+          </select>
+        </div>
+
         <div className="catalog-filter-group">
           <span className="catalog-filter-label"><Palette size={13} /> Colour</span>
           <div className="catalog-chip-row">
@@ -71,6 +97,7 @@ export default function Catalog() {
             ))}
           </div>
         </div>
+
         <div className="catalog-filter-group">
           <span className="catalog-filter-label"><Ruler size={13} /> Size</span>
           <div className="catalog-chip-row">
@@ -82,6 +109,7 @@ export default function Catalog() {
             ))}
           </div>
         </div>
+
         <div className="catalog-filter-group">
           <span className="catalog-filter-label"><Layers size={13} /> Material</span>
           <div className="catalog-chip-row">
@@ -93,6 +121,7 @@ export default function Catalog() {
             ))}
           </div>
         </div>
+
         <div className="catalog-filter-group">
           <span className="catalog-filter-label"><IndianRupee size={13} /> Price</span>
           <div className="catalog-chip-row">
@@ -104,6 +133,7 @@ export default function Catalog() {
             ))}
           </div>
         </div>
+
         <div className="catalog-filter-group">
           <span className="catalog-filter-label"><Star size={13} /> Rating</span>
           <div className="catalog-chip-row">

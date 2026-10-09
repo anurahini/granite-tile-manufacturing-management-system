@@ -46,6 +46,7 @@ export default function ProductionOrder() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/production"
     />
   )
 }

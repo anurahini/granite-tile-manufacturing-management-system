@@ -1,50 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { api } from '../api/index.js'
 
 const AuthContext = createContext(null)
-
-const USERS_KEY = 'gtmms_users'
 const SESSION_KEY = 'gtmms_session'
-
-// Seed a default demo account on first run so the login page is usable
-// immediately, without any backend or API.
-function seedUsers() {
-  const existing = localStorage.getItem(USERS_KEY)
-  if (!existing) {
-    const defaultUsers = [
-      {
-        fullName: 'Ramesh Sundaram',
-        employeeId: 'EMP-2001',
-        email: 'ramesh.s@granitex.com',
-        mobile: '+91 98400 12345',
-        username: 'admin',
-        password: 'admin123',
-        department: 'Operations',
-        role: 'Plant Administrator',
-      },
-    ]
-    localStorage.setItem(USERS_KEY, JSON.stringify(defaultUsers))
-  }
-}
-
-function getUsers() {
-  seedUsers()
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
-  } catch {
-    return []
-  }
-}
-
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users))
-}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    seedUsers()
     const raw = localStorage.getItem(SESSION_KEY) || sessionStorage.getItem(SESSION_KEY)
     if (raw) {
       try {
@@ -56,54 +20,60 @@ export function AuthProvider({ children }) {
     setLoading(false)
   }, [])
 
-  const login = ({ username, password, remember, method = 'username' }) => {
-    const users = getUsers()
-    const identifier = String(username).toLowerCase().trim()
-    const match = users.find((u) => {
-      if (u.password !== password) return false
-      if (method === 'email') return u.email.toLowerCase() === identifier
-      if (method === 'phone') return u.mobile.replace(/\s+/g, '') === identifier.replace(/\s+/g, '')
-      return u.username.toLowerCase() === identifier
-    })
-    if (!match) {
-      const label = method === 'email' ? 'email' : method === 'phone' ? 'mobile number' : 'username'
-      return { success: false, message: `Invalid ${label} or password.` }
+  const login = async ({ username, password, role, remember, method = 'username' }) => {
+    try {
+      const res = await api.post('/auth/login', { username, password, role, method })
+      if (!res.success) {
+        return { success: false, message: res.message || 'Login failed.' }
+      }
+      const sessionUser = { ...res.user, token: res.token }
+      if (remember) {
+        localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
+        sessionStorage.removeItem(SESSION_KEY)
+      } else {
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
+        localStorage.removeItem(SESSION_KEY)
+      }
+      setUser(sessionUser)
+      return { success: true }
+    } catch (err) {
+      return { success: false, message: err.message || 'Unable to connect to server.' }
     }
-    const sessionUser = {
-      fullName: match.fullName,
-      username: match.username,
-      role: match.role,
-      department: match.department,
-      employeeId: match.employeeId,
-    }
-    if (remember) {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
-      sessionStorage.removeItem(SESSION_KEY)
-    } else {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
-      localStorage.removeItem(SESSION_KEY)
-    }
-    setUser(sessionUser)
-    return { success: true }
   }
 
-  const register = (data) => {
-    const users = getUsers()
-    const usernameTaken = users.some(
-      (u) => u.username.toLowerCase() === String(data.username).toLowerCase()
-    )
-    if (usernameTaken) {
-      return { success: false, message: 'That username is already registered.' }
+  const register = async (data) => {
+    try {
+      const res = await api.post('/auth/register', data)
+      if (!res.success) {
+        return { success: false, message: res.message || 'Registration failed.' }
+      }
+      return { success: true, message: res.message }
+    } catch (err) {
+      return { success: false, message: err.message || 'Unable to connect to server.' }
     }
-    const emailTaken = users.some(
-      (u) => u.email.toLowerCase() === String(data.email).toLowerCase()
-    )
-    if (emailTaken) {
-      return { success: false, message: 'An account with this email already exists.' }
+  }
+
+  const sendOtp = async (mobile) => {
+    return await api.post('/auth/send-otp', { mobile })
+  }
+
+  const verifyOtp = async (mobile, otp) => {
+    return await api.post('/auth/verify-otp', { mobile, otp })
+  }
+
+  const loginWithGoogle = async (credential) => {
+    try {
+      const res = await api.post('/auth/google', { credential })
+      if (!res.success) {
+        return { success: false, message: res.message || 'Google login failed.' }
+      }
+      const sessionUser = { ...res.user, token: res.token }
+      localStorage.setItem(SESSION_KEY, JSON.stringify(sessionUser))
+      setUser(sessionUser)
+      return { success: true }
+    } catch (err) {
+      return { success: false, message: err.message || 'Unable to connect to server.' }
     }
-    users.push(data)
-    saveUsers(users)
-    return { success: true }
   }
 
   const logout = () => {
@@ -117,7 +87,10 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!user,
     loading,
     login,
+    loginWithGoogle,
     register,
+    sendOtp,
+    verifyOtp,
     logout,
   }
 
@@ -129,3 +102,4 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used within an <AuthProvider>')
   return ctx
 }
+

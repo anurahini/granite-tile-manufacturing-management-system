@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserPlus, ArrowLeft, ShieldCheck, SendHorizonal, CheckCircle2 } from 'lucide-react'
 import AuthLayout from '../layouts/AuthLayout.jsx'
@@ -12,60 +12,80 @@ const initialForm = {
   username: '', password: '', confirmPassword: '', department: '', role: '',
 }
 
-function generateOtp() {
-  return String(Math.floor(100000 + Math.random() * 900000))
-}
-
 export default function Register() {
-  const { register } = useAuth()
+  const { register, sendOtp, verifyOtp } = useAuth()
   const navigate = useNavigate()
 
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  // ---- OTP verification state (frontend-only demo — no real SMS gateway) ----
+  // ---- OTP verification state connected to backend ----
   const [otpSent, setOtpSent] = useState(false)
-  const [otpValue, setOtpValue] = useState('')
   const [otpInput, setOtpInput] = useState('')
   const [otpVerified, setOtpVerified] = useState(false)
   const [otpError, setOtpError] = useState('')
+  const [demoOtp, setDemoOtp] = useState('')
+  const [timer, setTimer] = useState(0)
+
+  useEffect(() => {
+    let interval = null
+    if (timer > 0) {
+      interval = setInterval(() => setTimer((t) => t - 1), 1000)
+    }
+    return () => clearInterval(interval)
+  }, [timer])
 
   const update = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }))
-    // If mobile number changes after OTP was already sent/verified, reset it
     if (key === 'mobile' && (otpSent || otpVerified)) {
       setOtpSent(false)
       setOtpVerified(false)
-      setOtpValue('')
       setOtpInput('')
       setOtpError('')
+      setDemoOtp('')
+      setTimer(0)
     }
   }
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     setOtpError('')
     if (!form.mobile.trim()) {
       setOtpError('Enter your mobile number first.')
       return
     }
-    const code = generateOtp()
-    setOtpValue(code)
-    setOtpSent(true)
-    setOtpVerified(false)
-    setOtpInput('')
-  }
-
-  const handleVerifyOtp = () => {
-    if (otpInput.trim() === otpValue) {
-      setOtpVerified(true)
-      setOtpError('')
+    const res = await sendOtp(form.mobile.trim())
+    if (res.success) {
+      setOtpSent(true)
+      setOtpVerified(false)
+      setOtpInput('')
+      setTimer(30)
+      if (res.otp) {
+        setDemoOtp(res.otp)
+      } else {
+        setDemoOtp('')
+      }
     } else {
-      setOtpError('Incorrect OTP. Please check and try again.')
+      setOtpError(res.message || 'Failed to send OTP')
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleVerifyOtp = async () => {
+    setOtpError('')
+    if (!otpInput.trim()) {
+      setOtpError('Please enter the 6-digit OTP.')
+      return
+    }
+    const res = await verifyOtp(form.mobile.trim(), otpInput.trim())
+    if (res.success) {
+      setOtpVerified(true)
+      setOtpError('')
+    } else {
+      setOtpError(res.message || 'Incorrect or expired OTP. Please try again.')
+    }
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setSuccess('')
@@ -89,7 +109,7 @@ export default function Register() {
       return
     }
 
-    const result = register({
+    const result = await register({
       fullName: form.fullName.trim(),
       employeeId: form.employeeId.trim(),
       email: form.email.trim(),
@@ -152,9 +172,15 @@ export default function Register() {
               type="button"
               className={`btn btn-sm ${otpVerified ? 'btn-ghost' : 'btn-dark'}`}
               onClick={handleSendOtp}
-              disabled={otpVerified}
+              disabled={otpVerified || timer > 0}
             >
-              {otpVerified ? <><CheckCircle2 size={14} /> Verified</> : <><SendHorizonal size={14} /> {otpSent ? 'Resend OTP' : 'Send OTP'}</>}
+              {otpVerified ? (
+                <><CheckCircle2 size={14} /> Verified</>
+              ) : timer > 0 ? (
+                `Resend (${timer}s)`
+              ) : (
+                <><SendHorizonal size={14} /> {otpSent ? 'Resend OTP' : 'Send OTP'}</>
+              )}
             </button>
           </div>
         </div>
@@ -163,16 +189,49 @@ export default function Register() {
         {otpSent && !otpVerified && (
           <div className="auth-otp-panel">
             <div className="auth-otp-panel-label"><ShieldCheck size={14} /> Enter the 6-digit OTP sent to your mobile</div>
+
+            {demoOtp && (
+              <div style={{
+                margin: '10px 0',
+                padding: '10px 14px',
+                background: '#fef3c7',
+                border: '1px solid #f59e0b',
+                borderRadius: '6px',
+                color: '#92400e',
+                fontSize: '13px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '8px'
+              }}>
+                <span>
+                  <strong>Demo / Testing OTP:</strong> <code style={{ fontSize: '15px', fontWeight: 'bold', background: '#fff', padding: '2px 8px', borderRadius: '4px', letterSpacing: '2px', color: '#b45309' }}>{demoOtp}</code>
+                  <span style={{ fontSize: '11px', display: 'block', opacity: 0.85, marginTop: '2px' }}>
+                    (Twilio credentials pending in backend/.env &mdash; use code <strong>{demoOtp}</strong> or <strong>123456</strong>)
+                  </span>
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-dark"
+                  style={{ padding: '4px 10px', fontSize: '12px' }}
+                  onClick={() => setOtpInput(demoOtp)}
+                >
+                  Auto-fill OTP
+                </button>
+              </div>
+            )}
+
             <div className="auth-otp-row">
               <input
-                type="text" maxLength={6} placeholder="Enter OTP"
+                type="text" maxLength={6} placeholder="Enter 6-digit OTP"
                 value={otpInput} onChange={(e) => setOtpInput(e.target.value.replace(/\D/g, ''))}
               />
               <button type="button" className="btn btn-primary btn-sm" onClick={handleVerifyOtp}>Verify OTP</button>
             </div>
             {otpError && <div className="auth-error" style={{ marginTop: 8 }}>{otpError}</div>}
             <div className="auth-hint" style={{ marginTop: 8 }}>
-              Demo mode — no real SMS is sent. Your OTP is <b>{otpValue}</b>.
+              A 6-digit verification code has been sent via SMS or generated for testing (valid for 5 minutes).
             </div>
           </div>
         )}
@@ -211,7 +270,7 @@ export default function Register() {
           </div>
           <div className="field">
             <label htmlFor="confirmPassword">Confirm Password</label>
-            <input id="confirmPassword" type="password" placeholder="Re-enter password" value={form.confirmPassword} onChange={update('confirmPassword')} autoComplete="new-password" />
+            <input id="confirmPassword" type="password" placeholder="Re-enter password" value={form.confirmPassword} autoComplete="new-password" onChange={update('confirmPassword')} />
           </div>
         </div>
 

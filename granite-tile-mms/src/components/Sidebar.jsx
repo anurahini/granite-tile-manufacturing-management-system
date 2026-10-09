@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { ChevronDown, ChevronsLeft, ChevronsRight, Gem } from 'lucide-react'
-import { navConfig } from '../data/navConfig.js'
+import { getNavForRole } from '../data/navConfig.js'
 import { useLanguage } from '../context/LanguageContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
 import './Sidebar.css'
 
 export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobileOpen }) {
   const location = useLocation()
   const { t } = useLanguage()
+  const { user } = useAuth()
+  
+  const roleNavItems = getNavForRole(user?.role)
+
   const [openGroups, setOpenGroups] = useState(() => {
     const initial = {}
-    navConfig.forEach(item => {
+    roleNavItems.forEach(item => {
       if (item.type === 'group') {
         initial[item.label] = item.children.some(c => location.pathname.startsWith(c.path))
       }
@@ -37,7 +42,7 @@ export default function Sidebar({ collapsed, setCollapsed, mobileOpen, setMobile
         </div>
 
         <nav className="sidebar-nav">
-          {navConfig.map((item) => {
+          {roleNavItems.map((item) => {
             if (item.type === 'link') {
               const Icon = item.icon
               return (

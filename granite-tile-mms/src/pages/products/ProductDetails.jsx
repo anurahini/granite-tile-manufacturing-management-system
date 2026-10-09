@@ -7,6 +7,7 @@ import {
   IndianRupee, Calculator, ShoppingCart, ArrowLeft, Check, Heart,
   FileText, Download, X, CheckCircle2, Star
 } from 'lucide-react'
+import { api } from '../../api/index.js'
 import './ProductDetails.css'
 
 // Parses a "600x600mm" style size string into a tile area in sq.ft.
@@ -73,13 +74,39 @@ export default function ProductDetails() {
   const [color, setColor] = useState(product?.colors?.[0]?.name)
   const [size, setSize] = useState(product?.sizes?.[0])
   const [finish, setFinish] = useState(product?.finishes?.[0])
-
-  const [length, setLength] = useState(10)
-  const [width, setWidth] = useState(10)
+  const [length, setLength] = useState('10')
+  const [width, setWidth] = useState('10')
 
   const [quoteOpen, setQuoteOpen] = useState(false)
   const [quoteSent, setQuoteSent] = useState(false)
   const [quoteForm, setQuoteForm] = useState({ name: '', phone: '', message: '' })
+  const [stockError, setStockError] = useState('')
+
+  const handleAddToSalesOrder = () => {
+    setStockError('')
+    const requestedQty = requiredTiles || 1
+    if (product.stock <= 0 || product.status === 'Out of Stock') {
+      setStockError(`Product '${product.name}' is currently Out of Stock. Cannot create Sales Order.`)
+      return
+    }
+    if (requestedQty > product.stock) {
+      setStockError(`Requested quantity (${requestedQty} pcs) exceeds available stock (${product.stock} pcs).`)
+      return
+    }
+
+    navigate('/sales-order', {
+      state: {
+        product: product.name,
+        quantity: requestedQty,
+        price: product.price,
+        totalAmount: product.price * requestedQty,
+        color,
+        size,
+        finish,
+        fromCatalog: true
+      }
+    })
+  }
 
   if (!product) {
     return (
@@ -103,8 +130,17 @@ export default function ProductDetails() {
   const totalPrice = (product.price * area).toLocaleString('en-IN', { maximumFractionDigits: 0 })
   const requiredTiles = Math.ceil(area / tileAreaSqFt(size || product.sizes[0])) || 0
 
-  const submitQuote = (e) => {
+  const submitQuote = async (e) => {
     e.preventDefault()
+    if (!quoteForm.name.trim() || !quoteForm.phone.trim()) return
+    await api.post('/enquiries', {
+      productLot: product.name,
+      customerName: quoteForm.name.trim(),
+      phone: quoteForm.phone.trim(),
+      email: quoteForm.email || '',
+      quantity: requiredTiles || 1,
+      message: quoteForm.message || `Quotation requested for ${product.name} (${color}, ${size}, ${finish}).`
+    })
     setQuoteSent(true)
   }
 
@@ -230,7 +266,13 @@ export default function ProductDetails() {
             </div>
           </div>
 
-          <button className="btn btn-primary auth-submit" style={{ marginTop: 18 }}>
+          {stockError && (
+            <div className="auth-error" style={{ marginTop: 12 }}>
+              {stockError}
+            </div>
+          )}
+
+          <button className="btn btn-primary auth-submit" style={{ marginTop: 18 }} onClick={handleAddToSalesOrder}>
             <ShoppingCart size={16} /> Add to Sales Order
           </button>
         </div>

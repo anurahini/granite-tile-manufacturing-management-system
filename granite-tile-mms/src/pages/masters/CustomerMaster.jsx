@@ -37,6 +37,7 @@ export default function CustomerMaster() {
       rows={rows}
       filters={['Type', 'City', 'Status']}
       addLabel="Add Customer"
+      endpoint="/customers"
     />
   )
 }

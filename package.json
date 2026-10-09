@@ -1,0 +1,13 @@
+{
+  "name": "granite-tile-manufacturing-management-system",
+  "version": "1.0.0",
+  "description": "Full-Stack Granite & Tile Manufacturing Management System",
+  "private": true,
+  "scripts": {
+    "start:backend": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "seed:backend": "cd backend && npm run seed",
+    "start:frontend": "cd granite-tile-mms && npm run dev",
+    "build:frontend": "cd granite-tile-mms && npm run build"
+  }
+}

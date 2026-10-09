@@ -46,6 +46,7 @@ export default function Payment() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/payments"
     />
   )
 }

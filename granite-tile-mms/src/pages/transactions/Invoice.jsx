@@ -46,6 +46,7 @@ export default function Invoice() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/invoices"
     />
   )
 }

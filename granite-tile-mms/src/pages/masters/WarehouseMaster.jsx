@@ -37,6 +37,7 @@ export default function WarehouseMaster() {
       rows={rows}
       filters={['Location', 'Status']}
       addLabel="Add Warehouse"
+      endpoint="/warehouses"
     />
   )
 }

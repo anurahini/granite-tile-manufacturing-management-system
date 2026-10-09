@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../components/Sidebar.jsx'
 import Navbar from '../components/Navbar.jsx'
 import Chatbot from '../components/Chatbot.jsx'
+import VoiceAssistant from '../components/VoiceAssistant.jsx'
 import { navConfig } from '../data/navConfig.js'
 
 function getPageTitle(pathname) {
@@ -20,6 +21,7 @@ function getPageTitle(pathname) {
 export default function MainLayout() {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [voiceOpen, setVoiceOpen] = useState(false)
   const location = useLocation()
 
   return (
@@ -31,12 +33,17 @@ export default function MainLayout() {
         setMobileOpen={setMobileOpen}
       />
       <div className={`main-col ${collapsed ? 'sidebar-collapsed' : ''}`}>
-        <Navbar onMenuClick={() => setMobileOpen(!mobileOpen)} pageTitle={getPageTitle(location.pathname)} />
+        <Navbar 
+          onMenuClick={() => setMobileOpen(!mobileOpen)} 
+          onVoiceClick={() => setVoiceOpen(true)}
+          pageTitle={getPageTitle(location.pathname)} 
+        />
         <div className="page-body">
           <Outlet />
         </div>
       </div>
       <Chatbot />
+      <VoiceAssistant isOpenExternal={voiceOpen} onCloseExternal={() => setVoiceOpen(false)} />
     </div>
   )
 }

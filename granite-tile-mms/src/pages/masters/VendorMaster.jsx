@@ -60,6 +60,7 @@ export default function VendorMaster() {
       rows={rows}
       filters={['Service Type', 'Delivery Status', 'Rating', 'Status']}
       addLabel="Add Vendor"
+      endpoint="/vendors"
     />
   )
 }

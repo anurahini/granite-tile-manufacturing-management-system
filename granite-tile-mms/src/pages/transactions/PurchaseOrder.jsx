@@ -46,6 +46,7 @@ export default function PurchaseOrder() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/purchases"
     />
   )
 }

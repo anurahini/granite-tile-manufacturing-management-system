@@ -38,6 +38,7 @@ export default function UserMaster() {
       rows={rows}
       filters={['Role', 'Department', 'Status']}
       addLabel="Add User"
+      endpoint="/users"
     />
   )
 }

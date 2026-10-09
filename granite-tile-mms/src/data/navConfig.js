@@ -2,7 +2,7 @@ import {
   Home, Users, UserSquare2, Contact, Truck, Boxes, Tags,
   Warehouse, Cog, ShoppingCart, Factory, PackageSearch, ReceiptText,
   Send, FileStack, Wallet, BarChart3, PieChart, Settings, LayoutGrid,
-  Scale, Heart, Tag
+  Scale, Heart, Tag, Sparkles, LineChart, MessageSquare, MessageCircle, Mic, Bell
 } from 'lucide-react'
 
 export const navConfig = [
@@ -11,6 +11,7 @@ export const navConfig = [
     type: 'group', label: 'Catalog', labelKey: 'catalog', icon: LayoutGrid,
     children: [
       { label: 'Product Catalog', labelKey: 'productCatalog', path: '/product-catalog', icon: LayoutGrid },
+      { label: 'AI Room Visualizer', labelKey: 'aiRoomVisualizer', path: '/room-visualizer', icon: Sparkles },
       { label: 'Compare Products', labelKey: 'compareProducts', path: '/compare', icon: Scale },
       { label: 'Wishlist', labelKey: 'wishlist', path: '/wishlist', icon: Heart },
       { label: 'Clearance Sale', labelKey: 'clearanceSale', path: '/clearance-sale', icon: Tag },
@@ -47,7 +48,27 @@ export const navConfig = [
     children: [
       { label: 'Report Center', labelKey: 'reportCenter', path: '/report-center', icon: BarChart3 },
       { label: 'Monthly Profit Analysis', labelKey: 'profitAnalysis', path: '/monthly-profit-analysis', icon: PieChart },
+      { label: 'Business Analytics', labelKey: 'businessAnalytics', path: '/business-analytics', icon: LineChart },
+    ]
+  },
+  {
+    type: 'group', label: 'Communication', labelKey: 'communication', icon: MessageSquare,
+    children: [
+      { label: 'WhatsApp', labelKey: 'whatsApp', path: '/whatsapp', icon: MessageCircle },
+      { label: 'Voice Mail', labelKey: 'voiceMail', path: '/voice-mail', icon: Mic },
+      { label: 'Notifications', labelKey: 'notifications', path: '/notifications', icon: Bell },
     ]
   },
   { type: 'link', label: 'Settings', labelKey: 'settings', path: '/settings', icon: Settings },
 ]
+
+export function getNavForRole(role) {
+  if (role === 'Plant Administrator') {
+    return [
+      { type: 'link', label: 'Admin Portal', labelKey: 'adminPortal', path: '/admin-dashboard', icon: Home },
+      ...navConfig
+    ];
+  }
+
+  return navConfig;
+}

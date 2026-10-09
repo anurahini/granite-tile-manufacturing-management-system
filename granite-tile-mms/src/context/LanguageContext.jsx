@@ -15,7 +15,24 @@ export function LanguageProvider({ children }) {
     localStorage.setItem(LANG_KEY, code)
   }
 
-  const t = (key) => translations[lang]?.[key] || translations.en[key] || key
+  const t = (key) => {
+    if (!key) return ''
+    const currentDict = translations[lang] || translations.en
+    if (currentDict[key]) return currentDict[key]
+
+    const strKey = String(key).trim()
+    if (currentDict[strKey]) return currentDict[strKey]
+
+    const lowerKey = strKey.toLowerCase()
+    if (currentDict[lowerKey]) return currentDict[lowerKey]
+
+    // Fallback to English dictionary
+    if (translations.en[key]) return translations.en[key]
+    if (translations.en[strKey]) return translations.en[strKey]
+    if (translations.en[lowerKey]) return translations.en[lowerKey]
+
+    return key
+  }
 
   return (
     <LanguageContext.Provider value={{ lang, changeLang, t }}>

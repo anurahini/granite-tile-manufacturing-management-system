@@ -46,6 +46,7 @@ export default function SalesOrder() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/sales"
     />
   )
 }

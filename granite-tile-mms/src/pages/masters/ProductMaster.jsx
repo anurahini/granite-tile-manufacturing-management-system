@@ -37,6 +37,7 @@ export default function ProductMaster() {
       rows={rows}
       filters={['Category', 'Finish', 'Status']}
       addLabel="Add Product"
+      endpoint="/products"
     />
   )
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, Search, Bell, ChevronDown, LogOut, UserCircle2, SettingsIcon } from 'lucide-react'
+import { Menu, Search, Bell, ChevronDown, LogOut, UserCircle2, SettingsIcon, Mic } from 'lucide-react'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useLanguage } from '../context/LanguageContext.jsx'
 import ThemeSwitcher from './ThemeSwitcher.jsx'
@@ -12,7 +12,7 @@ function getInitials(name) {
   return name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
 }
 
-export default function Navbar({ onMenuClick, pageTitle }) {
+export default function Navbar({ onMenuClick, onVoiceClick, pageTitle }) {
   const [profileOpen, setProfileOpen] = useState(false)
   const { user, logout } = useAuth()
   const { t } = useLanguage()
@@ -45,6 +45,13 @@ export default function Navbar({ onMenuClick, pageTitle }) {
       </div>
 
       <div className="navbar-right">
+        <button 
+          className="icon-btn voice-nav-btn"
+          onClick={onVoiceClick}
+          title="Voice Assistant (Speech to text in Tamil/English)"
+        >
+          <Mic size={19} className="text-blue-500" />
+        </button>
         <LanguageSwitcher />
         <ThemeSwitcher />
         <button className="icon-btn">

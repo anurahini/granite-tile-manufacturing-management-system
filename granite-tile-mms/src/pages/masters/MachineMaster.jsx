@@ -37,6 +37,7 @@ export default function MachineMaster() {
       rows={rows}
       filters={['Type', 'Bay / Line', 'Status']}
       addLabel="Add Machine"
+      endpoint="/machines"
     />
   )
 }

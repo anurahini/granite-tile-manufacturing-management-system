@@ -46,6 +46,7 @@ export default function Delivery() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/deliveries"
     />
   )
 }

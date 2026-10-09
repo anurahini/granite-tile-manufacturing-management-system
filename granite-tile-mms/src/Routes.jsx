@@ -6,6 +6,7 @@ import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import Register from './pages/Register.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import AdminDashboard from './pages/AdminDashboard.jsx'
 import Settings from './pages/Settings.jsx'
 
 import UserMaster from './pages/masters/UserMaster.jsx'
@@ -29,11 +30,16 @@ import Payment from './pages/transactions/Payment.jsx'
 
 import ReportCenter from './pages/reports/ReportCenter.jsx'
 import ProfitAnalysis from './pages/reports/ProfitAnalysis.jsx'
+import BusinessAnalytics from './pages/reports/BusinessAnalytics.jsx'
+import WhatsApp from './pages/communication/WhatsApp.jsx'
+import VoiceMail from './pages/communication/VoiceMail.jsx'
+import Notifications from './pages/communication/Notifications.jsx'
 import Catalog from './pages/products/Catalog.jsx'
 import ProductDetails from './pages/products/ProductDetails.jsx'
 import Compare from './pages/products/Compare.jsx'
 import Wishlist from './pages/products/Wishlist.jsx'
 import ClearanceSale from './pages/products/ClearanceSale.jsx'
+import RoomVisualizer from './pages/products/RoomVisualizer.jsx'
 
 export default function AppRoutes() {
   return (
@@ -50,8 +56,10 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/product-catalog" element={<Catalog />} />
           <Route path="/product-catalog/:id" element={<ProductDetails />} />
+          <Route path="/room-visualizer" element={<RoomVisualizer />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/clearance-sale" element={<ClearanceSale />} />
@@ -77,6 +85,11 @@ export default function AppRoutes() {
 
           <Route path="/report-center" element={<ReportCenter />} />
           <Route path="/monthly-profit-analysis" element={<ProfitAnalysis />} />
+          <Route path="/business-analytics" element={<BusinessAnalytics />} />
+
+          <Route path="/whatsapp" element={<WhatsApp />} />
+          <Route path="/voice-mail" element={<VoiceMail />} />
+          <Route path="/notifications" element={<Notifications />} />
 
           <Route path="/settings" element={<Settings />} />
         </Route>

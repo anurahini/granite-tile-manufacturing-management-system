@@ -46,6 +46,7 @@ export default function Inventory() {
       summary={summary}
       columns={columns}
       rows={rows}
+      endpoint="/inventory"
     />
   )
 }

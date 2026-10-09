@@ -58,6 +58,7 @@ export default function SupplierMaster() {
       rows={suppliers}
       filters={['Material', 'Location', 'Status']}
       addLabel="Add Supplier"
+      endpoint="/suppliers"
     />
   )
 }

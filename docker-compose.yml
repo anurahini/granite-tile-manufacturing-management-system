@@ -1,0 +1,64 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: gtmms-mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-granite_tile_mms}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD:-rootpassword}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - gtmms-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    container_name: gtmms-backend-container
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET:-granite_tile_mms_super_secret_jwt_key_2026}
+      DB_DIALECT: mysql
+      DB_HOST: gtmms-mysql-container
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      DB_NAME: ${DB_NAME:-granite_tile_mms}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-1081384744115-akkrt4iluhsdh7uo33fkdk2u7n7bhqrq.apps.googleusercontent.com}
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - gtmms-network
+
+  frontend:
+    build:
+      context: ./granite-tile-mms
+      dockerfile: Dockerfile
+    container_name: gtmms-frontend-container
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - gtmms-network
+
+volumes:
+  mysql_data:
+
+networks:
+  gtmms-network:
+    driver: bridge
